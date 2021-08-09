@@ -1,0 +1,11 @@
+<li class="@this.GetType().Name" >
+    <NavLink href="@Url" Match="@Match">
+        @Label
+    </NavLink>
+</li>
+
+@code {
+    [Parameter] public string Label { get; set; }
+    [Parameter] public string Url { get; set; }
+    [Parameter] public NavLinkMatch Match { get; set; }
+}

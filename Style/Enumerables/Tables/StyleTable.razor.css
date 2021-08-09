@@ -1,0 +1,41 @@
+.StyleTable_container {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 16px;
+    box-shadow: 0 1px 0 rgb(0 0 0 / 3%), 0 1px 8px rgb(0 21 41 / 12%);
+}
+
+.StyleTable {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.StyleTable tr {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: 0.35em;
+}
+
+.StyleTable th,
+.StyleTable td {
+  padding: 0.625em;
+  text-align: center;
+}
+
+.StyleTable td.td-action {
+    width: 85px;
+}
+
+.StyleTable td.td-loading {
+    text-align: left;
+    background-color: wheat;
+}
+
+.StyleTable th {
+    font-size: 0.85em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}

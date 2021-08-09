@@ -1,0 +1,15 @@
+<div class="@this.GetType().Name">
+    <aside>@ChildAside</aside>
+    <div>
+        <header>@ChildHeader</header>
+        <main>@ChildContent</main>
+        <footer>@ChildFooter</footer>
+    </div>
+</div>
+
+@code {
+    [Parameter] public RenderFragment ChildHeader { get; set; }
+    [Parameter] public RenderFragment ChildAside { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment ChildFooter { get; set; }
+}

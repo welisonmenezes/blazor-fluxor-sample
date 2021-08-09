@@ -1,0 +1,9 @@
+<div class="@this.GetType().Name">
+    <div>@ChildColOne</div>
+    <div>@ChildColTwo</div>
+</div>
+
+@code {
+    [Parameter] public RenderFragment ChildColOne { get; set; }
+    [Parameter] public RenderFragment ChildColTwo { get; set; }
+}

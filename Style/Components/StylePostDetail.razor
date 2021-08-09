@@ -1,0 +1,43 @@
+<div class="StylePostDetail">
+    @if (!IsPostEmpty())
+    {
+        <h1>@Title</h1>
+        <p>@Body</p>
+        <p><b>Id:</b> @Id</p>
+        <p><b>UserId:</b> @UserId</p>
+    }
+    else 
+    {
+        <p>Post sem dados.</p>
+    }
+    <hr>
+    <div>
+        <button type="button" @onclick="HandleLoad">Carregar</button>
+        <button type="button" @onclick="HandleDelete">Deletar</button>
+        <button type="button" @onclick="HandleReset">Resetar</button>
+    </div>
+</div>
+
+@code {
+    [Parameter] public Action HandleLoad { get; set; } = () => 
+    { 
+        System.Console.WriteLine("Add your own Handle Load method."); 
+    };
+    [Parameter] public Action HandleDelete { get; set; } = () => 
+    { 
+        System.Console.WriteLine("Add your own Handle Delete method."); 
+    };
+    [Parameter] public Action HandleReset { get; set; } = () => 
+    { 
+        System.Console.WriteLine("Add your own Handle Reset method."); 
+    };
+    [Parameter] public string Title { get; set; }
+    [Parameter] public string Body { get; set; }
+    [Parameter] public int Id { get; set; }
+    [Parameter] public int? UserId { get; set; }
+
+    public bool IsPostEmpty()
+    {
+        return string.IsNullOrEmpty(Title) && string.IsNullOrEmpty(Body) && UserId == null;
+    }
+}

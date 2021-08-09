@@ -1,0 +1,54 @@
+@typeparam TValue
+@inherits StyleBaseInput<TValue>
+@using System.Globalization
+
+@if (IsHiddenInput())
+{
+    <input @attributes="AdditionalAttributes" value="@Value" />
+}
+else 
+{
+    <div class="StyleInputText">
+        @if (!string.IsNullOrEmpty(Label))
+        {
+            <label>@Label</label>
+        }
+
+        <input 
+            @attributes="AdditionalAttributes" 
+            @bind-value="@Value" 
+            @oninput="@(async (ChangeEventArgs) => { await HandleOnChange(ChangeEventArgs); })" />
+        
+        @if (ErrorMessages != null)
+        {
+            <div class="errors">
+                @foreach (string message in ErrorMessages)
+                {
+                    <div class="validation-message">@message</div>
+                }
+            </div>
+        }
+        
+    </div>
+}
+
+@code {
+    private async Task HandleOnChange(ChangeEventArgs args)
+    {   
+        object value = args.Value.ToString();
+        TValue newValue;
+
+        BindConverter.TryConvertTo<TValue>(value, CultureInfo.CurrentCulture, out newValue);
+        
+        string newValueAsString = newValue == null ? default(string) : (string)ConvertType.ChangeType(newValue, typeof(string));
+
+        Value = (TValue)ConvertType.ChangeType(newValueAsString, typeof(TValue));
+
+        await ValueChanged.InvokeAsync(Value);
+        
+        if (EditContext != null && ! string.IsNullOrEmpty(Name))
+        {
+            EditContext.NotifyFieldChanged(EditContext.Field(Name));
+        }
+    }
+}

@@ -1,0 +1,87 @@
+@inherits FluxorComponent
+@implements IDisposable
+@inject IState<PostsState> PostsState
+@inject IState<PostState> PostState
+@inject IActionSubscriber ActionSubscriber
+@inject IDispatcher Dispatcher
+@inject PostService postService
+
+<StyleLoader State="@PostsState.Value">
+
+    <StyleTable 
+        Items="@PostsState.Value.Posts" 
+        HandleOnSelect="OnSelect" 
+        HandleOnDelete="OnDelete"
+        HandleOnReload="OnRefresh"
+        IdToChange="@IdToChange"
+        IsLoading="@PostState.Value.IsLoading" />
+
+</StyleLoader>
+
+@code {
+    public int IdToChange { get; set; } = 0;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        ActionSubscriber.SubscribeToAction<AsyncUpdatePostAction>(this, (Action) =>
+        {
+            ChangeIdToChange();
+        });
+
+        ActionSubscriber.SubscribeToAction<AsyncLoadPostAction>(this, (Action) =>
+        {
+            ChangeIdToChange(0);
+        });
+
+        ActionSubscriber.SubscribeToAction<ResetPostAction>(this, (Action) =>
+        {
+            ChangeIdToChange(0);
+        });
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        if (!PostsState.Value.Posts.Any())
+        {
+            await InvokeAsync(() =>  { Dispatcher.Dispatch(new AsyncLoadPostsAction()); });
+        }
+    }
+
+    public void OnSelect(Post item)
+    {
+        Post post = new Post{
+            Id = item.Id,
+            Title = item.Title,
+            Body = item.Body,
+            UserId = item.UserId
+        };
+        Dispatcher.Dispatch(new SetPostAction { Post = post });
+    }
+
+    public void OnDelete(Post item)
+    {
+        Dispatcher.Dispatch(new AsyncDeletePostAction { Post = item });
+        ChangeIdToChange(item.Id);
+    }
+
+    public void OnRefresh()
+    {
+        Dispatcher.Dispatch(new AsyncLoadPostsAction());
+    }
+
+    public void ChangeIdToChange(int? id = null)
+    {
+        IdToChange = (id == null) ? PostState.Value.Post.Id : (int) id;
+        StateHasChanged();
+    }
+
+    public new void Dispose()
+    {
+        base.Dispose();
+        ActionSubscriber.UnsubscribeFromAllActions(this);
+    }
+}

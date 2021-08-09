@@ -1,0 +1,5 @@
+@inherits FluxorComponent
+@inject IState<PostsState> PostsState
+@inject IState<PostState> PostState
+
+<StyleStateInfos PostTitle="@PostState.Value.Post.Title" PostCount="@PostsState.Value.Posts.Count" />

@@ -1,0 +1,15 @@
+@inherits LayoutComponentBase
+
+<StyleBaseLayout>
+    <ChildHeader>
+        <MainHeader />
+    </ChildHeader>
+    <ChildAside>
+        <StyleBaseMenu>
+            <StyleBaseMenuItem Label="Home" Url="/" Match="NavLinkMatch.All" />
+            <StyleBaseMenuItem Label="About" Url="/about" Match="NavLinkMatch.Prefix" />
+        </StyleBaseMenu>
+    </ChildAside>
+    <ChildContent>@Body</ChildContent>
+    <ChildFooter>Footer here</ChildFooter>
+</StyleBaseLayout>

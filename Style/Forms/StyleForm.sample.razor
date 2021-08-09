@@ -1,0 +1,31 @@
+@* @layout StyleSampleLayout
+@page "/_sample/StyleForm"
+
+<StyleForm EditContext="editContext" HandleValidSubmit="OnSubmit">
+    <StyleInputText Label="Título" @bind-Value="post.Title" />
+    <StyleInputText Label="Conteúdo" @bind-Value="post.Body" />
+    <StyleInputNumber Label="Usuário" @bind-Value="post.UserId" />
+    <StyleInputNumber type="hidden" @bind-Value="post.Id" />
+</StyleForm>
+
+@code {
+    private EditContext editContext;
+
+    private Post post = new Post
+    {
+        Id = 1,
+        Title = "Title here",
+        Body = "Content here",
+        UserId = 1
+    };
+
+    protected override void OnInitialized()
+    {
+        editContext = new(post);
+    }
+
+    private void OnSubmit()
+    {
+        System.Console.WriteLine(post.UserId);
+    }
+} *@

@@ -1,0 +1,99 @@
+@inherits FluxorComponent
+@implements IDisposable
+@inject IState<PostsState> PostsState
+@inject IState<PostState> PostState
+@inject IDispatcher Dispatcher
+@inject IActionSubscriber ActionSubscriber
+@inject PostService postService
+
+<StyleForm  
+    EditContext="editContext" 
+    HandleSubmit="OnSubmit" 
+    HandleReset="ResetForm" 
+    HandleSelect="PopulateForm" 
+    IsEditForm="IsEditForm()">
+
+    <StyleInputNumber type="hidden" Name="Id" @bind-Value="@thePost.Id" />
+    <StyleInputText Name="Title" Label="Título" @bind-Value="@thePost.Title" />
+    <StyleInputText Name="Body" Label="Conteúdo" @bind-Value="@thePost.Body" />
+    <StyleInputNumber Name="UserId" Label="Usuário" @bind-Value="@thePost.UserId" />
+
+</StyleForm>
+
+@code {
+    private EditContext editContext;
+    private Post thePost;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        
+        thePost = new Post();
+        editContext = new(thePost);
+
+        ActionSubscriber.SubscribeToAction<SetPostAction>(this, async (Action) =>
+        {
+            await Task.Delay(1);
+            PopulateForm();
+            StateHasChanged();
+        });
+
+        ActionSubscriber.SubscribeToAction<UpdatePostAction>(this, (Action) =>
+        {
+            ResetForm();
+        });
+
+        PostState.StateChanged += PostState_StateChanged;
+    }
+
+    private void OnSubmit()
+    {
+        if (editContext.Validate())
+        {
+            if (thePost.Id != 0)
+            {
+                Dispatcher.Dispatch(new AsyncUpdatePostAction { Post = thePost });
+            }
+            else 
+            {
+                Dispatcher.Dispatch(new AsyncAddPostAction { Post = thePost });
+            }
+        }
+        else 
+        {
+            System.Console.WriteLine("Inválido!");
+        }
+    }
+
+    public void ResetForm()
+    {
+        thePost = new Post();
+        editContext = new(thePost);
+    }
+
+    public void PopulateForm()
+    {
+        thePost.Id = PostState.Value.Post.Id;
+        thePost.Title = PostState.Value.Post.Title;
+        thePost.Body = PostState.Value.Post.Body;
+        thePost.UserId = PostState.Value.Post.UserId;
+        editContext = new(thePost);
+    }
+
+    private void PostState_StateChanged(object sender, PostState e)
+    {
+        System.Console.WriteLine("PostState Changed!");
+    }
+    
+    public bool IsEditForm()
+    {
+        return (PostState.Value.Post.Id != 0 && thePost.Id != 0);
+    }
+
+    public new void Dispose()
+    {
+        base.Dispose();
+        PostState.StateChanged -= PostState_StateChanged;
+        ActionSubscriber.UnsubscribeFromAllActions(this);
+    }
+}

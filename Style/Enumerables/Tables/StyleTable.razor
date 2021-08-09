@@ -1,0 +1,122 @@
+
+<div class="StyleTable_container">
+    <button type="button" @onclick="HandleOnReload">Recarregar</button>
+    <hr>
+    @if(Items != null && Items.Count() > 0)
+    {
+        <table class="StyleTable">
+            <thead>
+                <tr>
+                    @foreach (var prop in typeof(TItem).GetProperties())
+                    {
+                        <th>@prop.Name</th>
+                    }
+                    <th colspan="2">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (UseVirtualize)
+                {
+                    <Virtualize Context="item" Items="Items" TItem="TItem">
+                        <tr>
+                            @if (IsRowChanging(item))
+                            {
+                                <td colspan="6" class="td-loading">Loading...</td>
+                            }
+                            else 
+                            {
+                                @foreach (var prop in Properties)
+                                {
+                                    @if (@prop.GetValue(item) != null)
+                                    {
+                                        <td>@prop.GetValue(item).ToString()</td>
+                                    }
+                                    else 
+                                    {
+                                        <td>-</td>
+                                    }
+                                }
+                                <td class="td-action">
+                                    <button @onclick="@(() => { HandleOnSelect(item); })">Selecionar</button>
+                                </td>
+                                <td class="td-action">
+                                    <button @onclick="@(() => { HandleOnDelete(item); })">Deletar</button>
+                                </td>
+                            }
+                        </tr>
+                    </Virtualize>
+                }
+                else 
+                {
+                    @foreach (var item in Items)
+                    {
+                        <tr>
+                            @if (IsRowChanging(item))
+                            {
+                                <td colspan="6" class="td-loading">Loading...</td>
+                            }
+                            else 
+                            {
+                                @foreach (var prop in typeof(TItem).GetProperties())
+                                {
+                                    <td> @prop.GetValue(item).ToString()</td>
+                                }
+                                <td class="td-action">
+                                    <button @onclick="@(() => { HandleOnSelect(item); })">Selecionar</button>
+                                </td>
+                                <td class="td-action">
+                                    <button @onclick="@(() => { HandleOnDelete(item); })">Deletar</button>
+                                </td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+    else 
+    {
+        <p class="StyleTable_loading">Nenhum dado encontrado.</p>
+    }
+</div>
+
+@typeparam TItem
+
+@code {
+    [Parameter] public List<TItem> Items { get; set; }
+    [Parameter] public bool UseVirtualize { get; set; } = true;
+    [Parameter] public Action<TItem> HandleOnSelect { get; set; } = (TItem item) => {
+        System.Console.WriteLine("Add your own Handle Select method.");  
+    };
+    [Parameter] public Action<TItem> HandleOnDelete { get; set; } = (TItem item) => {
+        System.Console.WriteLine("Add your own Handle Delete method.");  
+    };
+
+    [Parameter] public Action HandleOnReload { get; set; } = () => {
+        System.Console.WriteLine("Add your own Handle Reload method.");  
+    };
+    [Parameter] public int IdToChange { get; set; }
+    [Parameter] public bool IsLoading { get; set; }
+
+    public System.Reflection.PropertyInfo[] Properties { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        Properties = typeof(TItem).GetProperties();
+    }
+
+    protected bool IsRowChanging(object item)
+    {
+        foreach (var prop in typeof(TItem).GetProperties())
+        {
+            if (prop.Name == "Id")
+            {
+                if ((prop.GetValue(item).ToString() == IdToChange.ToString()) && IsLoading)
+                {
+                    return true;
+                }
+            } 
+        }
+        return false;
+    }
+}

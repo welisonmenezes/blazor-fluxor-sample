@@ -1,0 +1,17 @@
+.StyleTwoCols {
+    display: flex;
+    align-content: flex-start;
+    justify-content: space-between;
+}
+
+.StyleTwoCols > div {
+    width: 100%;
+}
+
+.StyleTwoCols > div:first-child {
+    padding-right: 1rem;
+}
+
+.StyleTwoCols > div:last-child {
+    padding-left: 1rem;
+}

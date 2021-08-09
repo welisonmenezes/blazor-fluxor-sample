@@ -1,0 +1,7 @@
+.StyleBaseMenuItem {
+    margin-bottom: 1rem;
+}
+
+.StyleBaseMenuItem ::deep a {
+    color: var(--colorAsideText);
+}

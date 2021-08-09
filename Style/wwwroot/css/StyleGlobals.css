@@ -1,0 +1,69 @@
+@import url(../vendors/normalize.css);
+
+:root {
+    --colorAsideBg: #172E50;
+    --colorAsideText: #758AB6;
+    --colorMainBg: #F3F6FB;
+    --colorCardBg: #FFFFFF;
+    --colorCardText: #333333;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    color: var(--colorCardText);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+ol {
+    margin: 0;
+    padding: 0;
+}
+
+ul,
+ol,
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+a,
+button {
+    cursor: pointer;
+}
+
+/***********************************************************************
+    BLAZOR
+ **********************************************************************/
+ #blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}

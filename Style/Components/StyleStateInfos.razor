@@ -1,0 +1,18 @@
+<div class="StyleStateInfos">
+    <p><b>Post Corrente: </b> @PostTitle</p>
+    <p><b>Total de posts:</b> @PostCount</p>
+</div>
+
+@code {
+    [Parameter] public string PostTitle { get; set; }
+    [Parameter] public int PostCount { get; set; } = 0;
+
+    protected override void OnParametersSet()
+    {
+        if (string.IsNullOrEmpty(PostTitle))
+        {
+            PostTitle = "Não há Post no PostState.";
+            StateHasChanged();
+        }
+    }
+}

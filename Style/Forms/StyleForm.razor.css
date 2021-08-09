@@ -1,0 +1,21 @@
+.StyleForm {
+    padding: 2rem;
+    background-color: #fff;
+    border: solid 1px #eee;
+    border-radius: 16px;
+    box-shadow: 0 1px 0 rgb(0 0 0 / 3%), 0 1px 8px rgb(0 21 41 / 12%);
+    margin-bottom: 2rem;
+}
+
+.StyleForm .errors {
+    color: red;
+    font-size: 12px;
+}
+
+.StyleForm .errors ::deep .validation-errors {
+    margin-bottom: 1rem;
+}
+
+.StyleForm  h3 {
+    margin-bottom: 1rem;
+}

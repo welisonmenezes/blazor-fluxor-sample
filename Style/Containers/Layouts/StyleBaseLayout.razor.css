@@ -1,0 +1,43 @@
+.StyleBaseLayout {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    min-height: 100vh;
+}
+
+.StyleBaseLayout > aside {
+    width: 240px;
+    background-color: var(--colorAsideBg);
+    color: var(--colorAsideText);
+    padding: 1rem;
+    text-align: right;
+}
+
+.StyleBaseLayout > div {
+    width: 100%;
+}
+
+.StyleBaseLayout > div > header {
+    height: 60px;
+}
+
+.StyleBaseLayout > div > main {
+    width: 100%;
+    background-color: var(--colorMainBg);
+    padding: 1rem;
+    min-height: calc(100vh - 100px);
+}
+
+.StyleBaseLayout > div > footer {
+    height: 40px;
+}
+
+.StyleBaseLayout > div > header,
+.StyleBaseLayout > div > footer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--colorCardBg);
+    box-shadow: 0 1px 0 rgb(0 0 0 / 3%), 0 1px 8px rgb(0 21 41 / 12%);
+}

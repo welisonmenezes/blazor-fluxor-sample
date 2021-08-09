@@ -1,0 +1,12 @@
+.StyleStateInfos {
+    font-size: 14px;
+    color: royalblue;
+    text-align: left;
+    padding: 10px;
+    width: 100%;
+}
+
+.StyleStateInfos p {
+    padding: 0;
+    margin: 0;
+}

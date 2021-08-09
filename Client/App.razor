@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
+@inject IWebAssemblyHostEnvironment HostEnvironment
+
+<!-- Add Fluxor -->
+<Fluxor.Blazor.Web.StoreInitializer />
+
+<StyleRoot>
+    <Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true" AdditionalAssemblies="@NewAssemblies">
+        <Found Context="routeData">
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        </Found>
+        <NotFound>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <p>Sorry, there's nothing at this address.</p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</StyleRoot>
+
+@code {
+    public System.Collections.Generic.IEnumerable<System.Reflection.Assembly> NewAssemblies = null;
+
+    protected override void OnInitialized()
+    {
+        if (HostEnvironment.IsDevelopment())
+        {
+            NewAssemblies = new[] { typeof(StyleRoot).Assembly };
+        }
+    }
+}

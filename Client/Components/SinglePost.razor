@@ -1,0 +1,47 @@
+@inherits FluxorComponent
+@inject IState<PostState> PostState
+@inject IState<PostsState> PostsState
+@inject IDispatcher Dispatcher
+@inject PostService postService
+
+<StyleLoader State="@PostState.Value" HasItem="@(PostState.Value.Post.Id != 0)">
+    <StylePostDetail 
+        Title="@PostState.Value.Post.Title"
+        Body="@PostState.Value.Post.Body"
+        Id="@PostState.Value.Post.Id"
+        UserId="@PostState.Value.Post.UserId"
+        HandleLoad="OnLoadState"
+        HandleDelete="OnDelete"
+        HandleReset="OnResetState"
+    />
+</StyleLoader>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        
+        if (PostState.Value.Post.Id == 0)
+        {
+            await InvokeAsync(() =>  { Dispatcher.Dispatch(new AsyncLoadPostAction()); });
+        }
+    }
+    public void OnLoadState()
+    {
+        int theId = PostsState.Value.Posts.Max(p => p.Id) + 1;
+        Dispatcher.Dispatch(new AsyncLoadPostAction { Id = theId });
+    }
+
+    public void OnDelete()
+    {
+        if (PostState.Value.Post.Id != 0)
+        {
+            Dispatcher.Dispatch(new AsyncDeletePostAction { Post = PostState.Value.Post });
+        }
+    }
+
+    public void OnResetState()
+    {
+        Dispatcher.Dispatch(new ResetPostAction());
+    }
+}

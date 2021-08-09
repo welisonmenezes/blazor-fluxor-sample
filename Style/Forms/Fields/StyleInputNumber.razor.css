@@ -1,0 +1,24 @@
+.StyleInputNumber label {
+    display: block;
+    margin-bottom: 3px;
+}
+
+.StyleInputNumber input {
+    border: solid 1px #eee;
+    height: 42px;
+    line-height: 42px;
+    display: block;
+    width: 100%;
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+}
+
+.StyleInputNumber .errors {
+    color: red;
+    font-size: 12px;
+    margin-top: -10px;
+}
+
+.StyleInputNumber .errors ::deep .validation-message {
+    margin-bottom: 1rem;
+}

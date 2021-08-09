@@ -1,0 +1,53 @@
+@if (EditContext != null)
+{
+    <div class="@this.GetType().Name">
+        <EditForm EditContext="@EditContext" OnSubmit="@HandleSubmit">
+
+            @if (IsEditForm)
+            {
+                <h3>Editar State</h3>
+            }
+            else 
+            {
+                <h3>Cadastrar Novo</h3>
+            }
+
+            <div class="errors">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+            </div>
+
+            <CascadingValue Value="EditContext" Name="EditContext">
+                @ChildContent
+            </CascadingValue>
+
+            <div>
+                <button type="submit">Salvar Dados</button>
+                <button type="button" @onclick="HandleReset">Resetar Formulário</button>
+                <button type="button" @onclick="HandleSelect">Selecionar State Atual</button>
+            </div>
+        </EditForm>
+    </div>
+}
+else 
+{
+    <p class="StyleForm_loading">Loading...</p>
+}
+
+@code {
+    [Parameter] public Action HandleSubmit { get; set; } = () => 
+    { 
+        System.Console.WriteLine("Add your own Handle Submit method."); 
+    };
+    [Parameter] public Action HandleReset { get; set; } = () => 
+    { 
+        System.Console.WriteLine("Add your own Handle Reset method."); 
+    };
+    [Parameter] public Action HandleSelect { get; set; } = () => 
+    { 
+        System.Console.WriteLine("Add your own Handle Select method."); 
+    };
+    [Parameter] public EditContext EditContext { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public bool IsEditForm { get; set; } = false;
+}

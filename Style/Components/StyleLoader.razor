@@ -1,0 +1,27 @@
+<div>
+    @if (State.IsLoading && HasItem)
+    {
+        <div class="loading">
+            <p>Loading...</p>
+        </div>
+    }
+    else 
+    {
+        if (State.HasError)
+        {
+            <div class="error">
+                <p>@State.ErrorMessage</p>
+            </div>
+        }
+        else
+        {
+            <div class="content">@ChildContent</div>
+        }
+    }
+</div>
+
+@code {
+    [Parameter] public LoadableState State { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public bool HasItem { get; set; } = true;
+}

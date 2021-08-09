@@ -1,0 +1,16 @@
+@layout StyleSampleLayout
+@page "/_sample/StyleTable"
+
+<StyleTable Items="@posts" />
+
+@code {
+    public List<Post> posts { get; set; }
+
+    protected override void OnInitialized()
+    {
+        posts = new List<Post>();
+        posts.Add(new Post {Id = 1, Title = "Lorem ipsum dolor", Body = "Body test here", UserId = 1});
+        posts.Add(new Post {Id = 1, Title = "Lorem ipsum dolor", Body = "Body test here", UserId = 1});
+        posts.Add(new Post {Id = 1, Title = "Lorem ipsum dolor", Body = "Body test here", UserId = 1});
+    }
+}
